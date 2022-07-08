@@ -1,0 +1,5 @@
+[Unit]
+Description=Timer for memory checker
+
+[Timer]
+OnUnitActiveSec=60

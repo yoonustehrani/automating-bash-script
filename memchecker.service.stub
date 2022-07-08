@@ -1,0 +1,25 @@
+[Unit]
+Description=systemd job to run a ${service} bash script
+ConditionPathExists=${scriptpath}
+After=network.target
+
+[Service]
+Type=forking
+User=${username}
+Group=${usergroup}
+
+EnvironmentFile=-/etc/default/${service}
+
+WorkingDirectory=${workdir}
+ExecStart=${scriptpath}
+
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p ${logdir}
+ExecStartPre=/bin/chown ${username}:${username} ${logdir}
+ExecStartPre=/bin/chmod 755 ${logdir}
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=${username}
+
+[Install]
+WantedBy=multi-user.target

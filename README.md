@@ -15,6 +15,8 @@ The `memory-checker.sh` reads memory status from `/proc/meminfo`, calculates the
 the allocated memory exceeded `mem_exceed_limit` value in `/etc/default/memchecker` env file, it logs a message to `/var/log/memchecker/usage.log` 
 ### Env file (/etc/default/memchecker)
 The below variable means that the `memory-checker.sh` will log any memory usage above 50% To the `/var/log/memchecker/usage.log`
+<br />
+You can totaly change this to any number between `1` and `100`
 ```env
 mem_exceed_limit=50 # 50%
 ```
@@ -31,9 +33,15 @@ The `create-service.sh` tries to :
 # to create and run the service
 ./create-service.sh
 ```
+
 ### Cheking the `memchecker` status in systemctl
 ```
 systemctl status memchecker.service
+```
+
+### Cheking if memory usage exceeded
+```
+sudo tail /var/log/memchecker/usage.log
 ```
 
 ## Stop and delete

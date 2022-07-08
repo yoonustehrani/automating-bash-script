@@ -55,3 +55,7 @@ The `delete-service.sh` tries to :
 2. stop and disbale memchecker.service and memchecker.timer
 3. remove memchecker.service and memchecker.timer from `/lib/systemd/system`
 4. reload systemctl daemon
+```terminal
+# to stop and delete the service
+./delete-service.sh
+```

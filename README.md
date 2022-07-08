@@ -22,7 +22,7 @@ See, quite uncomplicated example for a bash script!
 
 ## Create and run
 The `create-service.sh` tries to :
-1. register a user named `sysbot`
+1. add a new user named `sysbot`
 2. create a memchecker.service and memchecker.timer inside `/lib/systemd/system`
 3. create env file for `memory-checker.sh` in `/etc/default/memchecker`
 4. reload systemctl daemon
@@ -31,3 +31,19 @@ The `create-service.sh` tries to :
 # to create and run the service
 ./create-service.sh
 ```
+### Cheking the `memchecker` status in systemctl
+```
+systemctl status memchecker.service
+```
+
+## Stop and delete
+Well everything comes to an end !
+<br />
+You can use the `delete-service.sh` to stop and delete everything done back in `create-service.sh`.
+<br />
+<br />
+The `delete-service.sh` tries to :
+1. delete the user `sysbot`
+2. stop and disbale memchecker.service and memchecker.timer
+3. remove memchecker.service and memchecker.timer from `/lib/systemd/system`
+4. reload systemctl daemon

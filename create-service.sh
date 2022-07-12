@@ -31,7 +31,7 @@ check_user_or_create() {
         echo " - User $1 already exists"
     else
         echo " - Creating user $1 ..."
-        sudo adduser --no-create-home --disabled-login $1
+        sudo adduser --no-create-home --disabled-login --gecos ""  $1
         if id $1 > /dev/null 2>&1;
         then 
             echo " - User $1 created"

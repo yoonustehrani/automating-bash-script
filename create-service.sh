@@ -1,24 +1,23 @@
 #!/bin/bash
-# This file creates a systemd service which runs ./memory-checker.sh periodicly
+# This file creates a systemd service to run a custom shell script
+# periodically in background based on the rich power of systemd
 
-service=memchecker
-bash_script=memory-checker.sh
-stubfile=$service.service.stub
-user="sysbot"
+read -n 20 -rp "Enter a name for the service: (e.g. myService) " service
+read -p "Enter path to the script you want the service to run : " target_path
 
-# @param $1 script filename
-# @returns script path
-get_script_path() {
-    script_directory=$(realpath .)
-    script_path="$script_directory/$1"
-    echo $script_path
-}
+target_path=$(sed "s_\~_${HOME}_" <<< $target_path)
+script=$(realpath $target_path)
+script_name=$(basename $script)
 
-# checking if the bash script exists
-script_path=$(get_script_path $bash_script)
-if [ ! -f $script_path ]
+# checking if $script is a real file
+if [ ! -f $script ]
 then
-    echo "*- Error $bash_script script does not exist ($script_path)"
+    echo -e "\tError ====>  $script_name is not a file"
+    exit 1
+# checking if $script is a shell script
+elif [ $(file --mime-type -b $script) != "text/x-shellscript" ]
+then
+    echo -e "\tError ====>  $script_name is not a shell script file"
     exit 1
 fi
 
@@ -42,21 +41,23 @@ check_user_or_create() {
     fi
 }
 
+user="sysbot"
 check_user_or_create $user
 
 # create custom environment configuration
-if [ ! -f /etc/default/$service ]; then
-  echo "mem_exceed_limit=50" | sudo tee /etc/default/$service
-fi
-sudo chmod 600 /etc/default/$service
-echo "Created Env file : /etc/default/$service"
+# if [ ! -f /etc/default/$service ]; then
+#   echo "mem_exceed_limit=50" | sudo tee /etc/default/$service
+# fi
+# sudo chmod 600 /etc/default/$service
+# echo "Created Env file : /etc/default/$service"
 
 # service systemd path
 shared_service_dir=/lib/systemd/system
 serviced_path=$shared_service_dir/$service.service
+
 # making service file from stub
 echo "+ Creating service file ..."
-sed "s_\${scriptpath}_${script_path}_" $stubfile \
+sed "s_\${scriptpath}_${script_path}_" ./service.service.stub \
 | sed "s_\${workdir}_$(realpath .)_" \
 | sed "s#\${username}#${user}#g" \
 | sed "s_\${usergroup}_${user}_" \

@@ -2,7 +2,7 @@
 # This file creates a systemd service to run a custom shell script
 # periodically in background based on the rich power of systemd
 
-read -n 20 -rp "Enter a name for the service: (e.g. myService) " service
+read -p "Enter a name for the service: (e.g. myService) " service
 read -p "Enter path to the script you want the service to run : " target_path
 
 target_path=$(sed "s_\~_${HOME}_" <<< $target_path)

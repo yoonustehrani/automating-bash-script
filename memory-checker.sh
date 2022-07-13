@@ -53,7 +53,7 @@ usage=$(memory_usage_percent $total $free)
 
 if [ -z $mem_exceed_limit ]
 then
-    max_mem=80
+    max_mem=50
 else
     max_mem=$mem_exceed_limit
 fi

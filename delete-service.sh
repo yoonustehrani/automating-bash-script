@@ -1,7 +1,12 @@
 #!/bin/bash
 
-service=memchecker
 user="sysbot"
+read -n 20 -p "Enter the name of service: " service
+
+if ! systemctl status $service.service > /dev/null 2>&1;
+then
+    echo "No such service in systemd unit"
+fi
 
 # deleting the user
 if id $user > /dev/null 2>&1;

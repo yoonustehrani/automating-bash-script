@@ -2,4 +2,4 @@
 Description=Systemd timer for ${service}
 
 [Timer]
-OnUnitActiveSec=60
+${timer_mode}=${timer_value}

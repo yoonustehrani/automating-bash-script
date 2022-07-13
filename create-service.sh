@@ -60,8 +60,8 @@ create_service_file() {
     | sed "s_\${workdir}_$(realpath .)_" \
     | sed "s#\${username}#${user}#g" \
     | sed "s_\${usergroup}_${user}_" \
-    | sed "s_\${logdir}_/var/log/memchecker_" \
-    | sed "s_\${service}_${service}_" \
+    | sed "s_\${logdir}_/var/log/${service}_" \
+    | sed "s#\${service}#${service}#g" \
     | sudo tee $serviced_path > /dev/null
 }
 # making service file from stub
